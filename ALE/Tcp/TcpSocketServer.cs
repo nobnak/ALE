@@ -33,8 +33,9 @@ namespace ALE.Tcp
             var listener = (TcpListener)result.AsyncState;
 
             //get the tcpClient and create a new WebSocket object.
-            var tcpClient = listener.EndAcceptTcpClient(result);
-            Callback(null, tcpClient);
+			using (var client = listener.EndAcceptTcpClient (result)) {
+				Callback(null, client);
+			}
 
             listener.BeginAcceptTcpClient(AcceptTcpClientCallback, listener);
         }
