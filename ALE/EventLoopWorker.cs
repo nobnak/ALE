@@ -1,54 +1,58 @@
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ALE
 {
     public class EventLoopWorker
     {
-        private Task _worker;
-
-        public readonly ManualResetEvent StopHandle = new ManualResetEvent(false);
-
         public bool Idle { get; private set; }
+        public bool Working {
+            get { lock (_locker) { return _working; } }
+            set { lock (_locker) { _working = value; } }
+        }
+
+        private readonly ManualResetEvent StopHandle = new ManualResetEvent(false);
+        private object _locker = new object();
+        private bool _working = false;
+
+        public EventLoopWorker() {
+            Idle = true;
+        }
 
         public void Start()
         {
-            StopHandle.Reset();
-            _worker.ContinueWith(Work);
+            if (!Working) {
+                Working = true;
+                ThreadPool.QueueUserWorkItem(Work);
+            }
         }
 
         public void Stop()
         {
-            StopHandle.Set();
+            Working = false;
         }
 
         public void Wait()
         {
-            _worker.Wait();
+            StopHandle.WaitOne();
         }
 
-        public EventLoopWorker()
+        private void Work(object stateInfo)
         {
-            _worker = Task.Factory.StartNew(() => { });
-        }
-
-        private void Work(Task incomingTask)
-        {
-            if (StopHandle.WaitOne(0))
-            {
-                return;
+            try {
+                StopHandle.Reset();
+                while (Working) {
+                    Thread.Sleep(0);
+                    var evt = EventLoop.NextEvent();
+                    if (evt == null) {
+                        Idle = true;
+                        continue;
+                    }
+                    Idle = false;
+                    evt();
+                }
+            } finally {
+                StopHandle.Set();
             }
-            var evt = EventLoop.NextEvent();
-            if (evt != null)
-            {
-                Idle = false;
-                _worker = incomingTask.ContinueWith(w2 => evt());
-                _worker.ContinueWith(Work);
-            } else
-            {
-                Idle = true;
-            }
-            incomingTask.Dispose();
         }
     }
 }

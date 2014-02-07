@@ -30,7 +30,8 @@ namespace ALE.FileSystem
 
         private FileSystemWatcher(string path, string filter)
         {
-            if (!String.IsNullOrWhiteSpace(filter))
+            var IsNullOrWhiteSpace = (string.IsNullOrEmpty(filter) || filter.Length == 0);
+            if (!IsNullOrWhiteSpace)
             {
                 _fsw = new System.IO.FileSystemWatcher(path, filter);
             } else
