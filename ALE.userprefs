@@ -1,6 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ALE/Tcp/WebSocketServer.cs">
+    <Files>
+      <File FileName="ALE/Tcp/WebSocketServer.cs" Line="36" Column="56" />
+      <File FileName="ALE/Tcp/WebSocket.cs" Line="1" Column="1" />
+      <File FileName="ALE/EventLoop.cs" Line="1" Column="1" />
+      <File FileName="ALE/Tcp/TcpSocketServer.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

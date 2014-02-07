@@ -56,6 +56,7 @@
     <Compile Include="Tcp\WebSocketServer.cs" />
     <Compile Include="Views\IViewProcessor.cs" />
     <Compile Include="Thread\ConcurrentQueue.cs" />
+    <Compile Include="Tcp\TcpSocketServer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
